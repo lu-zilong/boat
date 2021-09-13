@@ -289,11 +289,11 @@ int main()
 
     // 驱动器&电机 初始化
     Initial_Motor(fd485_4, 1);
-    Initial_Motor(fd485_4, 2);
+    Initial_Motor(fd485_5, 2);
     Set_Motor_Mode(fd485_4, 1, 1); // 设置电机模式，一般用位置和回零模式，视情况是否用速度模式
-    Set_Motor_Mode(fd485_4, 2, 1);
+    Set_Motor_Mode(fd485_5, 2, 1);
     Set_Rudder_Argument(fd485_4, 1, 10, 30, 30); // 设置速度、加减速度，可调
-    Set_Rudder_Argument(fd485_4, 2, 10, 30, 30);
+    Set_Rudder_Argument(fd485_5, 2, 10, 30, 30);
 
     // while(middle_bit != 0x101)
     // {
@@ -433,7 +433,7 @@ int main()
                     // if(st_dir_delay >= stDirDelayTime) // 这里设定延迟时间主要考虑在其他状态到直线后应等各推进器速度降为0时再旋转后推
                     // {
                         Send_Rudder(fd485_4, 1, rud_send); // rud left
-                        Send_Rudder(fd485_4, 2, rud_send); // rud right
+                        Send_Rudder(fd485_5, 2, rud_send); // rud right
                     //     st_dir_delay = stDirDelayTime;
                     // }
                     // st_dir_delay++;
@@ -649,8 +649,8 @@ int main()
                         printf("ldirrev_delta = %d, rdirrev_delta = %d, ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_delta, rdirrev_delta, ldirrev_send, rdirrev_send);
                         printf("sum: ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send, rdirrev_send);
                         // printf("sum: ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send + ldirrev_delta, rdirrev_send + rdirrev_delta);
-                        dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
-                        dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行
+                        // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
+                        // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行
                         // ldirrev_delta = 0;
                         // rdirrev_delta = 0;
                     }
@@ -684,8 +684,8 @@ int main()
 
                         printf("ldirrev_delta = %d, rdirrev_delta = %d, ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_delta, rdirrev_delta, ldirrev_send, rdirrev_send);
                         printf("sum: ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send + ldirrev_delta, rdirrev_send + rdirrev_delta);
-                        dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send + ldirrev_delta); // 后推1执行
-                        dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send + rdirrev_delta);  // 后推2执行
+                        // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send + ldirrev_delta); // 后推1执行
+                        // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send + rdirrev_delta);  // 后推2执行
                     }
             }
 
@@ -710,7 +710,7 @@ int main()
                 {
                     rud_send = goal_r;
                     Send_Rudder(fd485_4, 1, rud_send); // rud left
-                    Send_Rudder(fd485_4, 2, rud_send); // rud right
+                    Send_Rudder(fd485_5, 2, rud_send); // rud right
                     auto_rud_num = 0;
                 }
 
@@ -729,8 +729,8 @@ int main()
 
                 ldirrev_send = 127; // 这里可调
                 rdirrev_send = 127;
-                dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
-                dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行
+                // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
+                // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行
 
                 // auto_goalh_num++;
                 auto_rud_num++;
@@ -750,8 +750,8 @@ int main()
                 rdirrev_delta = 0;
                 siderev_delta = 0;
                 // Send_SideDir(siderev_send); // 侧推执行 
-                dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
-                dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行     
+                // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
+                // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行     
             }
 
             // 信息发送给1.接收GPS的程序2.
@@ -803,11 +803,11 @@ int main()
         // fclose(fp); 
     } // while
 
-    close(fd485_1);
-    close(fd485_2);
+    // close(fd485_1);
+    // close(fd485_2);
     // close(fd485_3);
     close(fd485_4);
-    // close(fd485_5);
+    close(fd485_5);
     close(fd485_6);
     // close(fd485_7);
 
