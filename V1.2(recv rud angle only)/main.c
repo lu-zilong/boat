@@ -204,11 +204,11 @@ int main()
     // 串口
     INT32 comport_A = 0, comport_B = 1, comport_C = 2, comport_D = 3, comport_E = 4, comport_F = 5, comport_G = 6; 
     INT32 baud_A = 38400, baud_B = 38400, baud_C = 38400, baud_D = 38400, baud_E = 38400, baud_F = 9600, baud_G = 38400; // baudrate
-    fd485_1 = OpenPort(comport_A, baud_A); // 后推1 
-    fd485_2 = OpenPort(comport_B, baud_B); // 后推2 
+    //fd485_1 = OpenPort(comport_A, baud_A); // 后推1 
+    //fd485_2 = OpenPort(comport_B, baud_B); // 后推2 
     // fd485_3 = OpenPort(comport_C, baud_C); // GPS
     fd485_4 = OpenPort(comport_D, baud_D); // 左右舵
-    // fd485_5 = OpenPort(comport_E, baud_E); // 架空台
+    fd485_5 = OpenPort(comport_E, baud_E); // 架空台
     fd485_6 = OpenPort(comport_F, baud_F); // 操纵杆 
     // fd485_7 = OpenPort(comport_G, baud_G); // 
 
