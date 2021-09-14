@@ -259,7 +259,7 @@ int main()
             // GPS COM2
             n = ReadComPort(fd485_8, recv_rawimusb, GPS_COM2RECV_SIZE); 
             z_w = recv_rawimusb[42] + (recv_rawimusb[43] << 8);
-            z_a = z_w/0.01;
+            z_a = z_w*0.01;
 
             // if(i % 10 == 0)
             // {
