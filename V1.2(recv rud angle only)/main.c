@@ -19,7 +19,7 @@
 // 线程
 #include <pthread.h>
 // 引用其他文件封装的函数
-#include "can.h"
+// #include "can.h"
 #include "serial.h"
 #include "rud.h"
 #include "dirrev.h"

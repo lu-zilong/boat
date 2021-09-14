@@ -71,10 +71,10 @@ INT32 OpenComPort (INT32 ComPort, INT32 baudrate, INT32 databit,
         pComPort = "/dev/ttyS7";
         break;
     case 6:
-        pComPort = "/dev/ttyUSB0";
+        pComPort = "/dev/ttyS4";
         break;
     case 7:
-        pComPort = "/dev/ttyUSB1";
+        pComPort = "/dev/ttyS0";
         break;
     default:
         pComPort = "/dev/ttyS0";//原O0

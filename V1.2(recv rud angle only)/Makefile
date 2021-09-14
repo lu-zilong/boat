@@ -1,18 +1,16 @@
 CC = gcc  
 # CC = arm-none-linux-gnueabi-gcc  
 	      
-objs = can.o serial.o rud.o dirrev.o controller.o joystick.o main.o  
-srcs = can.c serial.c rud.c dirrev.c controller.c joystick.c main.c  
+objs = serial.o rud.o dirrev.o controller.o joystick.o main.o  
+srcs = serial.c rud.c dirrev.c controller.c joystick.c main.c  
       
 test:$(objs)  
-	$(CC)  -o test $(objs) -lm -lpthread -lECanVci -lusb
+	$(CC)  -o test $(objs) -lm -lpthread 
 	@make clean  
       
-main.o:$(srcs) can.h serial.h rud.h dirrev.h controller.h joystick.h
+main.o:$(srcs) serial.h rud.h dirrev.h controller.h joystick.h
 	$(CC) -c  $(srcs)  
 
-can.o:can.c can.h
-	$(CC) -c can.c 
 
 serial.o:serial.c serial.h
 	$(CC) -c serial.c 

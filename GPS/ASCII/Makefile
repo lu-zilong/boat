@@ -5,7 +5,7 @@ objs = serial.o main.o
 srcs = serial.c main.c  
 
 test:$(objs)  
-	$(CC)  -o test $(objs) -lm -lpthread -lusb
+	$(CC)  -o test $(objs) -lm -lpthread 
 	@make clean  
       
 main.o:$(srcs) serial.h 
