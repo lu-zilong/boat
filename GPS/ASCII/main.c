@@ -28,7 +28,7 @@
 
 // GPS
 #define GPS_COM1RECV_SIZE 200  // 接收上位机的数组长度
-#define GPS_COM2RECV_SIZE 64  // 接收上位机的数组长度
+#define GPS_COM2RECV_SIZE 100  // 接收上位机的数组长度
 // 网络
 #define MYPORT 10000
 #define CLIENT_PORT 8080 // 8005 8888
@@ -85,6 +85,7 @@ typedef struct sendbuf  //GPFPD
     UINT8 Xor;   //校验
 }bdfpd_send;
 
+
 static struct itimerval oldtv;
 bool timer_sign = 0; // 标志位
 
@@ -99,6 +100,7 @@ INT32 HextoDec(INT8 a, INT8 b);
 INT32 readline(INT32 fd, void *read_buff, INT32 maxlen);
 _Bool GPS_XOR_checkout(INT8 *buff);
 int GPS_Analyse(bdfpd *gps_data, char *read_buff);
+int IMU_Analyse(int32_t *imu_data, uint8_t *read_buff);
 INT8 LongLat2XY(double longitude, double latitude, double *X, double *Y);
 int GPS_weeksec_BeiJing(double gpst[2]);
 
@@ -115,13 +117,15 @@ int main()
     INT32 side_rev = 0;
     INT32 jx, jy, jz;
     INT32 gps_analcheck = 0;
-    INT16 z_w = 0;
+    INT32 imu_analcheck = 0;
+    int32_t  imu_data[6];
     _Bool gps_recvcheck = 0;
-    double rud = 0.0, z_a = 0.0;
+    double rud = 0.0, w_x = 0.0,w_y=0,w_z=0,a_x=0,a_y=0,a_z=0;
 
     double temp_send[12] = {30.8309785, 120.8324900, 30.8308536, 120.8323451, 30.8316199, 120.8314938, 30.8312223, 120.8304572, 30.8308058, 120.8317033, 30.8308465, 120.8312374};
     double time_buff[2] = {0.0};
-    INT8 recv_bdfpd[GPS_COM1RECV_SIZE] = {0x00}, recv_rawimusb[GPS_COM2RECV_SIZE] = {0x00};
+    INT8 recv_bdfpd[GPS_COM1RECV_SIZE] = {0x00};
+    uint8_t recv_rawimusb[GPS_COM2RECV_SIZE] = {0x00};
     INT8 boat_status[300];
 
     // // 读文件参数
@@ -194,8 +198,8 @@ int main()
 	Set_Timer(100, 1); // 定时时间
 
     // 写进日志里
-    fp = fopen("msg.txt", "a+"); 
-    stdout = fp; 
+    // fp = fopen("msg.txt", "a+"); 
+    // stdout = fp; 
 
     printf("enter\n");
 
@@ -250,22 +254,29 @@ int main()
 
             //字符数组名本身就是地址，无需添加&(gps_data.Status)
             // gps_recvcheck = GPS_XOR_checkout(recv_bdfpd);
-            // if(gps_recvcheck == 1)
-            // {
-            //     //协议 ASCII字符转化为二进制数据
+            if(gps_recvcheck == 1)
+            {
+                //协议 ASCII字符转化为二进制数据
                 gps_analcheck = GPS_Analyse(&gps_data, recv_bdfpd);
-            // }
+             }
 
             // GPS COM2
             n = ReadComPort(fd485_8, recv_rawimusb, GPS_COM2RECV_SIZE); 
-            z_w = recv_rawimusb[42] + (recv_rawimusb[43] << 8);
-            z_a = z_w*0.01;
+            imu_analcheck = IMU_Analyse(imu_data,recv_rawimusb);
+            // z_w = recv_rawimusb[42] + (recv_rawimusb[43] << 8);
+            w_z = (double)imu_data[0]*200*720/2147483648;
+            w_y = (double)imu_data[1]*200*720/2147483648;
+            w_x= (double)imu_data[2]*200*720/2147483648;
+            a_z = (double)imu_data[3]*200*200/2147483648;
+            a_y = (double)imu_data[4]*200*200/2147483648;
+            a_x = (double)imu_data[5]*200*200/2147483648;
+            printf("%f %f %f %f %f %f\n", w_z,w_y,w_x ,a_z,a_y,a_x);
 
             // if(i % 10 == 0)
             // {
                 // sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f", gps_data.gps_sec, temp_send[j],  temp_send[j + 1], gps_data.ve,  gps_data.vn,  gps_data.heading); 
                 // sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading); 
-                sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, z_a); 
+                sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z); 
                 // printf("sendtoclient = %s\n", sendtoclient);
                 n = sendto(server_sockfd, sendtoclient, sizeof(sendtoclient), 0, (struct sockaddr *)& client_sockaddr, len_client); // 扔给上
             //     j = j + 2;
@@ -282,10 +293,10 @@ int main()
             minute = (clock_time & 0xFF00) >> 8;
             second = clock_time & 0xFF;
             sprintf(boat_status, "%d,%d,%d,%d,%lf,%d,%d,%d,%d,%d,%d,%d,%.2f", hour, minute, second, receivefromClient[1], rud, receivefromClient[3], 
-                            receivefromClient[4], side_rev, jx, jy, jz, receivefromClient[13], z_a); 
+                            receivefromClient[4], side_rev, jx, jy, jz, receivefromClient[13], w_z); 
 
             // printf("%s,%s,%s", sendtoclient, boat_status, recv_bdfpd);
-            printf("%s,%s", boat_status, recv_bdfpd);
+            // printf("%s,%s", boat_status, recv_bdfpd);
 
             // // if(i <= 10)
             // // {
@@ -412,6 +423,26 @@ int GPS_Analyse(bdfpd *gps_data, char *read_buff)
 
     // printf("gps_week=%lf gps_status=%s latitude=%lf\n",(*gps_data).gps_week,(*gps_data).Status,(*gps_data).latitude);
   
+    return 1;
+}
+
+int IMU_Analyse(int32_t *imu_data, uint8_t *read_buff)
+{
+     for(int i=0;i<GPS_COM2RECV_SIZE-56;i++)
+     {
+        if(read_buff[i]==0xaa && read_buff[i+1]==0x44 &&read_buff[i+2]==0x13)
+        {
+            // printf("%x %x %x %x ", read_buff[i+24],read_buff[i+25],read_buff[i+26],read_buff[i+27]);
+            imu_data[0] =(read_buff[i+43]<<24) + (read_buff[i+42]<<16) + (read_buff[i+41]<<8) + read_buff[i+40];
+            imu_data [1]=(read_buff[i+47]<<24) + (read_buff[i+46]<<16) + (read_buff[i+45]<<8) + read_buff[i+44];
+            imu_data [2]=(read_buff[i+51]<<24) + (read_buff[i+50]<<16) + (read_buff[i+49]<<8) + read_buff[i+48];
+            imu_data [3]=(read_buff[i+31]<<24) + (read_buff[i+30]<<16) + (read_buff[i+29]<<8) + read_buff[i+28];
+            imu_data [4]=(read_buff[i+35]<<24) + (read_buff[i+34]<<16) + (read_buff[i+33]<<8) + read_buff[i+32];
+            imu_data [5]=(read_buff[i+39]<<24) + (read_buff[i+38]<<16) + (read_buff[i+37]<<8) + read_buff[i+36];
+            //  printf("%d ", imu_data);
+            break;
+        }
+     }
     return 1;
 }
 
