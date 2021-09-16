@@ -11,7 +11,7 @@ typedef unsigned char UINT8;
 UINT16 CalcuCRC16(UINT8 *Array, UINT32 length);
 INT16 Send_DI(INT32 fd, UINT8 sendbuf[]);
 INT8 Send_DO(INT32 fd, UINT8 sendbuf[]);
-void Initial_Motor(INT32 fd, INT8 motor);
+void Initial_Motor(INT32 fd, INT8 motor,UINT8 *initial_motor_send);
 void Set_Motor_Mode(INT32 fd, INT8 motor, INT8 mode);
 void Set_Rudder_Argument(INT32 fd, INT8 motor, INT8 speed, UINT8 acceleration, UINT8 deceleration);
 void Send_Rudder(INT32 fd, INT8 motor_sign, double rudder);

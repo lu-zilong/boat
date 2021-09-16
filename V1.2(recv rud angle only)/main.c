@@ -288,11 +288,23 @@ int main()
     }
 
     // 驱动器&电机 初始化
-    Initial_Motor(fd485_4, 1);
+    UINT8 initial_motor_send1[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x01, 0x00, 0x00};
+    Initial_Motor(fd485_4, 1,initial_motor_send1);
+     UINT8 initial_motor_send2[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x03, 0x00, 0x00};
+    Initial_Motor(fd485_4, 1,initial_motor_send2);
+    UINT8 initial_motor_send3[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
+    Initial_Motor(fd485_4, 1,initial_motor_send3);
     Set_Motor_Mode(fd485_4, 1, 1); // 设置电机模式，一般用位置和回零模式，视情况是否用速度模式
     Set_Rudder_Argument(fd485_4, 1, 10, 30, 30);
 
-    Initial_Motor(fd485_5, 2);
+    // UINT8 initial_motor_send[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
+    // Initial_Motor(fd485_5, 2,initial_motor_send);
+    UINT8 initial_motor_send4[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x01, 0x00, 0x00};
+    Initial_Motor(fd485_5, 2,initial_motor_send4);
+     UINT8 initial_motor_send5[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x03, 0x00, 0x00};
+    Initial_Motor(fd485_5, 2,initial_motor_send5);
+    UINT8 initial_motor_send6[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
+    Initial_Motor(fd485_5, 2,initial_motor_send6);
     Set_Motor_Mode(fd485_5, 2, 1);
      // 设置速度、加减速度，可调
     Set_Rudder_Argument(fd485_5, 2, 10, 30, 30);

@@ -123,13 +123,13 @@ INT8 Send_DO(INT32 fd, UINT8 sendbuf[]) // 读限位
     return recvbuf[3];
 }
 
-void Initial_Motor(INT32 fd, INT8 motor)
+void Initial_Motor(INT32 fd, INT8 motor,UINT8 *initial_motor_send)
 {
     INT32 res, retval, i;
     UINT16 reg_crc = 0;
 
-    UINT8 initial_motor_send[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00}, 
-                    initial_motor_recv[8] = {0x00};
+    //  UINT8 initial_motor_send[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
+    UINT8   initial_motor_recv[8] = {0x00};
 
     tcflush(fd, TCIOFLUSH);
 
@@ -175,7 +175,7 @@ void Initial_Motor(INT32 fd, INT8 motor)
         perror("read initial_motor_recv error\n"); 
     }
 
-    usleep(1*1000);
+    usleep(50*1000);
 }
 
 void Set_Motor_Mode(INT32 fd, INT8 motor, INT8 mode)
