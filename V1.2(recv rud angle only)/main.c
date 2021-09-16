@@ -289,10 +289,12 @@ int main()
 
     // 驱动器&电机 初始化
     Initial_Motor(fd485_4, 1);
-    Initial_Motor(fd485_5, 2);
     Set_Motor_Mode(fd485_4, 1, 1); // 设置电机模式，一般用位置和回零模式，视情况是否用速度模式
+    Set_Rudder_Argument(fd485_4, 1, 10, 30, 30);
+
+    Initial_Motor(fd485_5, 2);
     Set_Motor_Mode(fd485_5, 2, 1);
-    Set_Rudder_Argument(fd485_4, 1, 10, 30, 30); // 设置速度、加减速度，可调
+     // 设置速度、加减速度，可调
     Set_Rudder_Argument(fd485_5, 2, 10, 30, 30);
 
     // while(middle_bit != 0x101)

@@ -135,10 +135,10 @@ void Initial_Motor(INT32 fd, INT8 motor)
 
     switch(motor)
     {
-        case 1: // 左推
+        case 1: // 右
             initial_motor_send[0] = 0x03;
             break;
-        case 2: // 右推
+        case 2: // 左
             initial_motor_send[0] = 0x04;
             break;
     }
