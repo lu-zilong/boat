@@ -198,8 +198,8 @@ int main()
 	Set_Timer(100, 1); // 定时时间
 
     // 写进日志里
-    // fp = fopen("msg.txt", "a+"); 
-    // stdout = fp; 
+    fp = fopen("msg.txt", "a+"); 
+    stdout = fp; 
 
     printf("enter\n");
 
@@ -270,7 +270,7 @@ int main()
             a_z = (double)imu_data[3]*200*200/2147483648;
             a_y = (double)imu_data[4]*200*200/2147483648;
             a_x = (double)imu_data[5]*200*200/2147483648;
-            printf("%f %f %f %f %f %f\n", w_z,w_y,w_x ,a_z,a_y,a_x);
+            // printf("%f %f %f %f %f %f\n", w_z,w_y,w_x,a_z,a_y,a_x);
 
             // if(i % 10 == 0)
             // {
@@ -296,7 +296,7 @@ int main()
                             receivefromClient[4], side_rev, jx, jy, jz, receivefromClient[13], w_z); 
 
             // printf("%s,%s,%s", sendtoclient, boat_status, recv_bdfpd);
-            // printf("%s,%s", boat_status, recv_bdfpd);
+            printf("%s,%s", boat_status, recv_bdfpd);
 
             // // if(i <= 10)
             // // {
