@@ -323,7 +323,7 @@ int main()
 
     // set up timer and start
 	signal(SIGALRM, Signal_Handler); // 定时执行函数
-	Set_Timer(150, 1); // 定时时间
+	Set_Timer(100, 1); // 定时时间
 
     printf("enter\n");
 
