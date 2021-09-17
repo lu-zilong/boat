@@ -427,15 +427,15 @@ int main()
                         jy_bit = jy_minbit + jy_minspace_rud + jy_midspace_rud; 
                         rud_send = rud_max;
                     }
-                    else if(jy_bit >= jy_midbit + jy_midspace_rud && jy_bit < jy_maxbit - jy_maxspace_rud)
-                    {
-                        jy_bit = jy_bit - jy_midspace_rud;
-                        rud_send =( (jy_bit - jy_midbit) * (rud_min - rud_mid) )/(jy_minbit + jy_minspace_rud + jy_midspace_rud - jy_midbit) + rud_mid;
-                    }
-                    else if(jy_bit >= jy_minbit + jy_minspace_rud && jy_bit < jy_midbit - jy_midspace_rud)
+                    else if(jy_bit >= jy_midbit + jy_midspace_rud ) //&& jy_bit < jy_maxbit - jy_maxspace_rud)
                     {
                         jy_bit = jy_bit + jy_midspace_rud;
-                        rud_send =( (jy_bit - jy_midbit) * (rud_max - rud_mid) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
+                        rud_send =( (jy_midbit - jy_bit) *(rud_max - rud_mid) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
+                    }
+                    else if(jy_bit < jy_midbit - jy_midspace_rud)  //&& y_bit >= jy_minbit + jy_minspace_rud &&
+                    {
+                        jy_bit = jy_bit - jy_midspace_rud;
+                        rud_send =( jy_midbit - jy_bit) *  (rud_min - rud_mid) )/(jy_minbit + jy_minspace_rud + jy_midspace_rud - jy_midbit) + rud_mid;
                     }
                     // if(jy_bit > jy_midbit - jy_midspace_rud && jy_bit < jy_midbit + jy_midspace_rud) 
                     else
