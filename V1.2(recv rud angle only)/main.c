@@ -295,7 +295,7 @@ int main()
     UINT8 initial_motor_send3[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
     Initial_Motor(fd485_4, 1,initial_motor_send3);
     Set_Motor_Mode(fd485_4, 1, 1); // 设置电机模式，一般用位置和回零模式，视情况是否用速度模式
-    Set_Rudder_Argument(fd485_4, 1, 10, 30, 30);
+    Set_Rudder_Argument(fd485_4, 1, 10, 60, 60);
 
     // UINT8 initial_motor_send[8] = {0x00, 0x06, 0x60, 0x40, 0x00, 0x0F, 0x00, 0x00};
     // Initial_Motor(fd485_5, 2,initial_motor_send);
@@ -307,7 +307,7 @@ int main()
     Initial_Motor(fd485_5, 2,initial_motor_send6);
     Set_Motor_Mode(fd485_5, 2, 1);
      // 设置速度、加减速度，可调
-    Set_Rudder_Argument(fd485_5, 2, 10, 30, 30);
+    Set_Rudder_Argument(fd485_5, 2, 10, 60, 60);
 
     // while(middle_bit != 0x101)
     // {
@@ -323,7 +323,7 @@ int main()
 
     // set up timer and start
 	signal(SIGALRM, Signal_Handler); // 定时执行函数
-	Set_Timer(100, 1); // 定时时间
+	Set_Timer(150, 1); // 定时时间
 
     printf("enter\n");
 
@@ -420,22 +420,22 @@ int main()
                     if(jy_bit >= jy_maxbit - jy_maxspace_rud)
                     {
                         jy_bit = jy_maxbit - jy_maxspace_rud - jy_midspace_rud;
-                        rud_send = rud_max;
+                        rud_send = rud_min;
                     }
                     else if(jy_bit <= jy_minbit + jy_minspace_rud)
                     {
                         jy_bit = jy_minbit + jy_minspace_rud + jy_midspace_rud; 
-                        rud_send = rud_min;
+                        rud_send = rud_max;
                     }
                     else if(jy_bit >= jy_midbit + jy_midspace_rud && jy_bit < jy_maxbit - jy_maxspace_rud)
                     {
                         jy_bit = jy_bit - jy_midspace_rud;
-                        rud_send =( (jy_bit - jy_midbit) * (rud_max - rud_mid) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
+                        rud_send =( (jy_bit - jy_midbit) * (rud_min - rud_mid) )/(jy_minbit + jy_minspace_rud + jy_midspace_rud - jy_midbit) + rud_mid;
                     }
                     else if(jy_bit >= jy_minbit + jy_minspace_rud && jy_bit < jy_midbit - jy_midspace_rud)
                     {
                         jy_bit = jy_bit + jy_midspace_rud;
-                        rud_send =( (jy_bit - jy_midbit) * (rud_min - rud_mid) )/(jy_minbit + jy_minspace_rud + jy_midspace_rud - jy_midbit) + rud_mid;
+                        rud_send =( (jy_bit - jy_midbit) * (rud_max - rud_mid) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
                     }
                     // if(jy_bit > jy_midbit - jy_midspace_rud && jy_bit < jy_midbit + jy_midspace_rud) 
                     else
