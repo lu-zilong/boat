@@ -443,7 +443,7 @@ int main()
                         jy_bit = jy_midbit;
                         rud_send = rud_mid;
                     }
-                    printf("REAL jy_bit = %d, j_button = %d\n", jy_bit, j_button);
+                    // printf("REAL jy_bit = %d, j_button = %d\n", jy_bit, j_button);
                     // if(st_dir_delay >= stDirDelayTime) // 这里设定延迟时间主要考虑在其他状态到直线后应等各推进器速度降为0时再旋转后推
                     // {
                         Send_Rudder(fd485_4, 1, rud_send); // rud left
