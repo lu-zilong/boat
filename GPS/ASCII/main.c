@@ -290,7 +290,7 @@ int main()
             hour = (clock_time & 0xFF0000) >> 16;
             minute = (clock_time & 0xFF00) >> 8;
             second = clock_time & 0xFF;
-            sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,%d,%d,%d,%d", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z,hour,minute,second,receivefromClient[2]); 
+            sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,%d,%d,%d,", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z,minute,second,jy); 
                 // printf("sendtoclient = %s\n", sendtoclient);
             n = sendto(server_sockfd, sendtoclient, sizeof(sendtoclient), 0, (struct sockaddr *)& client_sockaddr, len_client); // 扔给上
             sprintf(boat_status, "%d,%d,%d,%d,%lf,%d,%d,%d,%d,%d,%d,%d,%.2f", hour, minute, second, receivefromClient[1], rud, receivefromClient[3], 
