@@ -57,7 +57,7 @@ UINT32 Analyse_Joystick(INT8 func, UINT8 recv[]); // 操纵杆数据解析
 
 static struct itimerval oldtv; // 定时相关设置
 INT32 j_bit = 512; // 操纵杆x,y,z分量各类值设定
-INT32 jx_bit = 512, jx_minbit = 32, jx_midbit = 512, jx_maxbit = 992, jx_minspace = 49,  jx_midspace = 50,  jx_maxspace = 49, 
+UINT32 jx_bit = 512, jx_minbit = 32, jx_midbit = 512, jx_maxbit = 992, jx_minspace = 49,  jx_midspace = 50,  jx_maxspace = 49, 
             jy_bit = 512, jy_minbit = 32, jy_midbit = 512, jy_maxbit = 992, jy_minspace_side = 49, jy_minspace_rud = 120, jy_midspace_side = 50,  jy_midspace_rud = 60, jy_maxspace_side = 49, jy_maxspace_rud = 120, jy_lastbit = 512, 
             jz_bit = 512, jz_minbit = 32, jz_midbit = 512, jz_maxbit = 992, jz_minspace = 49,  jz_midspace = 50,  jz_maxspace = 49, 
             j_button = 0; // 操纵杆范围,侧推只考虑X轴
@@ -618,7 +618,7 @@ int main()
                     //     printf("ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send, rdirrev_send);
                 
                     // }
-
+/* 后推取消
                     // 此处为档位功能，目前前后各1挡127，应加入微调之功能
                     if(jx_bit > (jx_midbit + jx_midspace))
                     {
@@ -699,8 +699,9 @@ int main()
                         printf("ldirrev_delta = %d, rdirrev_delta = %d, ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_delta, rdirrev_delta, ldirrev_send, rdirrev_send);
                         printf("sum: ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send + ldirrev_delta, rdirrev_send + rdirrev_delta);
                         // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send + ldirrev_delta); // 后推1执行
-                        // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send + rdirrev_delta);  // 后推2执行
+                        // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send + rdirrev_delta);  // 后推2执行   
                     }
+*/
             }
 
             if(sailing_mode == 2) // auto
