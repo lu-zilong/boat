@@ -719,7 +719,7 @@ int main()
                     goal_r = atof(receivefromClient); // 
                 }
                 // printf("goal_rud = %.2f, goal_rud = %.2f\n", auto_recv_buff.goal_v, auto_recv_buff.goal_r);
-                printf("goal_rud = %.2f, goal_rud = %.2f\n", goal_v, goal_r);
+                printf("goal_rud = %.2f\n", goal_r);
 
                 if(auto_rud_num == 3) // 0.3s per rud
                 {
