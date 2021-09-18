@@ -89,6 +89,8 @@ typedef struct sendbuf  //GPFPD
 static struct itimerval oldtv;
 bool timer_sign = 0; // 标志位
 
+UINT32 rud_send=0;
+
 //文件
 FILE *fp; 
 
@@ -126,7 +128,7 @@ int main()
     double time_buff[2] = {0.0};
     INT8 recv_bdfpd[GPS_COM1RECV_SIZE] = {0x00};
     uint8_t recv_rawimusb[GPS_COM2RECV_SIZE] = {0x00};
-    INT8 boat_status[300];
+    char boat_status[300];
 
     // // 读文件参数
     // char recvfromFile[100];
@@ -231,9 +233,9 @@ int main()
             // printf("%d ", receivefromClient[i]);
             // }         
             // printf("\n");
-
-            rud = receivefromClient[2]/10.0;
-            side_rev = (receivefromClient[5] << 8) + receivefromClient[6]; // 侧推位置
+             rud_send = receivefromClient[5]<<8+receivefromClient[6];
+            rud = rud_send/10.0;
+            // side_rev = (receivefromClient[5] << 8) + receivefromClient[6]; // 侧推位置
             jx = (receivefromClient[7] << 8) + receivefromClient[8]; // 操纵杆x轴
             jy = (receivefromClient[9] << 8) + receivefromClient[10]; // 操纵杆y轴
             jz = (receivefromClient[11] << 8) + receivefromClient[12]; // 操纵杆z轴
@@ -290,11 +292,11 @@ int main()
             hour = (clock_time & 0xFF0000) >> 16;
             minute = (clock_time & 0xFF00) >> 8;
             second = clock_time & 0xFF;
-            sprintf(sendtoclient, "%.3f,%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,%d,%d,%d,", gps_data.gps_sec, gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z,minute,second,jy); 
+            sprintf(sendtoclient, "%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,%d,%d,%u,%lf,", gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z,minute,second,jy,rud); 
                 // printf("sendtoclient = %s\n", sendtoclient);
             n = sendto(server_sockfd, sendtoclient, sizeof(sendtoclient), 0, (struct sockaddr *)& client_sockaddr, len_client); // 扔给上
-            sprintf(boat_status, "%d,%d,%d,%d,%lf,%d,%d,%d,%d,%d,%d,%d,%.2f", hour, minute, second, receivefromClient[1], rud, receivefromClient[3], 
-                            receivefromClient[4], side_rev, jx, jy, jz, receivefromClient[2], w_z); 
+            sprintf(boat_status, "%d,%d,%d,%d,%lf,%d,%d,%d,%d,%d,%d,%.2f", hour, minute, second, receivefromClient[1], rud, receivefromClient[3], 
+                            receivefromClient[4], side_rev, jx, jy, jz, w_z); 
 
             // printf("%s,%s,%s", sendtoclient, boat_status, recv_bdfpd);
             printf("%s,%s", boat_status, recv_bdfpd);

@@ -772,11 +772,11 @@ int main()
             // 信息发送给1.接收GPS的程序2.
             sendtoClient[0] = 0x7F;
             sendtoClient[1] = sailing_mode;
-            sendtoClient[2] = (int)(rud_send * 10);
+            // sendtoClient[2] = (int)(rud_send * 10);
             sendtoClient[3] = ldirrev_send + ldirrev_delta;
             sendtoClient[4] = rdirrev_send + rdirrev_delta;
-            // sendtoClient[5] = ((siderev_send + siderev_delta) & 0xFF00) >> 8;
-            // sendtoClient[6] = (siderev_send + siderev_delta) & 0xFF;
+            sendtoClient[5] = ((rud_send*10) & 0xFF00) >> 8;
+             sendtoClient[6] = (rud_send*10) & 0xFF;
             if(recv_joystick[0] == 0xFF)
             {
                 sendtoClient[7] = recv_joystick[3]; // x
