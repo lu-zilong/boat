@@ -430,7 +430,7 @@ int main()
                     else if(jy_bit >= jy_midbit + jy_midspace_rud ) //&& jy_bit < jy_maxbit - jy_maxspace_rud)
                     {
                         jy_bit = jy_bit + jy_midspace_rud;
-                        rud_send =( (jy_midbit - jy_bit) *(rud_max - rud_mid) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
+                        rud_send =( (jy_bit - jy_midbit) *(rud_mid - rud_max) )/(jy_maxbit - jy_maxspace_rud - jy_midspace_rud - jy_midbit) + rud_mid;
                     }
                     else if(jy_bit < jy_midbit - jy_midspace_rud)  //&& y_bit >= jy_minbit + jy_minspace_rud &&
                     {
@@ -618,7 +618,7 @@ int main()
                     //     printf("ldirrev_send = %d, rdirrev_send = %d\n", ldirrev_send, rdirrev_send);
                 
                     // }
-/* 后推取消
+                    /* 后推取消
                     // 此处为档位功能，目前前后各1挡127，应加入微调之功能
                     if(jx_bit > (jx_midbit + jx_midspace))
                     {
@@ -702,6 +702,8 @@ int main()
                         // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send + rdirrev_delta);  // 后推2执行   
                     }
 */
+                    goal_r=0;  //自动的舵角值置零
+
             }
 
             if(sailing_mode == 2) // auto

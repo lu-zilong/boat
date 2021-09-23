@@ -219,6 +219,8 @@ int main()
 
             memset(recv_bdfpd, 0, sizeof(recv_bdfpd));
             memset(recv_rawimusb, 0, sizeof(recv_rawimusb));
+            memset(boat_status,0,sizeof(boat_status));
+            memset(sendtoclient,0,sizeof(sendtoclient));
 
             // recv from boat
             recv_len = recvfrom(server_sockfd, receivefromClient, sizeof(receivefromClient), 0, 
@@ -233,7 +235,7 @@ int main()
             // printf("%d ", receivefromClient[i]);
             // }         
             // printf("\n");
-             rud_send = receivefromClient[5]<<8+receivefromClient[6];
+             rud_send = receivefromClient[5]<<8 + (receivefromClient[6] & 0xFF);
             rud = rud_send/10.0;
             // side_rev = (receivefromClient[5] << 8) + receivefromClient[6]; // 侧推位置
             jx = (receivefromClient[7] << 8) + receivefromClient[8]; // 操纵杆x轴
@@ -291,7 +293,7 @@ int main()
             clock_time = GPS_weeksec_BeiJing(time_buff);
             hour = (clock_time & 0xFF0000) >> 16;
             minute = (clock_time & 0xFF00) >> 8;
-            second = clock_time & 0xFF;
+            second = clock_time & 0xFF;     
             sprintf(sendtoclient, "%.7lf,%.7lf,%.2f,%.2f,%.2f,%.2f,%d,%d,%u,%lf,", gps_data.latitude,  gps_data.longitude,  gps_data.ve,  gps_data.vn,  gps_data.heading, w_z,minute,second,jy,rud); 
                 // printf("sendtoclient = %s\n", sendtoclient);
             n = sendto(server_sockfd, sendtoclient, sizeof(sendtoclient), 0, (struct sockaddr *)& client_sockaddr, len_client); // 扔给上
