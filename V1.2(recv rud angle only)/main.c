@@ -760,12 +760,15 @@ int main()
 
             if(sailing_mode == 3) // 急停功能，至少所有推进器速度降为0
             {
-                siderev_send = 0;
-                ldirrev_send = 0;
-                rdirrev_send = 0;
-                ldirrev_delta = 0;
-                rdirrev_delta = 0;
-                siderev_delta = 0;
+                rud_send = 15;
+                Send_Rudder(fd485_4, 1, rud_send); // rud left
+                Send_Rudder(fd485_5, 2, rud_send); // rud right
+                // siderev_send = 0;
+                // ldirrev_send = 0;
+                // rdirrev_send = 0;
+                // ldirrev_delta = 0;
+                // rdirrev_delta = 0;
+                // siderev_delta = 0;
                 // Send_SideDir(siderev_send); // 侧推执行 
                 // dirrev_normal_L = Send_DirRev(fd485_1, ldirrev_send); // 后推1执行
                 // dirrev_normal_R = Send_DirRev(fd485_2, rdirrev_send);  // 后推2执行     
@@ -777,8 +780,8 @@ int main()
             // sendtoClient[2] = (int)(rud_send * 10);
             sendtoClient[3] = ldirrev_send + ldirrev_delta;
             sendtoClient[4] = rdirrev_send + rdirrev_delta;
-            sendtoClient[5] = ((UINT32)(rud_send*10) & 0xFF00) >> 8;
-             sendtoClient[6] = (UINT32)(rud_send*10) & 0xFF;
+            sendtoClient[5] = ((INT32)(rud_send*10) & 0xFF00) >> 8;
+             sendtoClient[6] = (INT32)(rud_send*10) & 0xFF;
             if(recv_joystick[0] == 0xFF)
             {
                 sendtoClient[7] = recv_joystick[3]; // x
