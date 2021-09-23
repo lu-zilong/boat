@@ -219,6 +219,7 @@ int main()
 
             memset(recv_bdfpd, 0, sizeof(recv_bdfpd));
             memset(recv_rawimusb, 0, sizeof(recv_rawimusb));
+            memset(receivefromClient,0,sizeof(receivefromClient));
             memset(boat_status,0,sizeof(boat_status));
             memset(sendtoclient,0,sizeof(sendtoclient));
 
