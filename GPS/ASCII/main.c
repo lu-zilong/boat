@@ -89,7 +89,7 @@ typedef struct sendbuf  //GPFPD
 static struct itimerval oldtv;
 bool timer_sign = 0; // 标志位
 
-UINT32 rud_send=0;
+INT32 rud_send=0;
 
 //文件
 FILE *fp; 
@@ -236,8 +236,8 @@ int main()
             // printf("%d ", receivefromClient[i]);
             // }         
             // printf("\n");
-             rud_send = receivefromClient[5]<<8 + (receivefromClient[6] & 0xFF);
-            rud = rud_send/10.0;
+            rud_send = (INT32)((receivefromClient[5]<<8) + (receivefromClient[6]&0xFF));
+            rud = (double)rud_send/10.0;
             // side_rev = (receivefromClient[5] << 8) + receivefromClient[6]; // 侧推位置
             jx = (receivefromClient[7] << 8) + receivefromClient[8]; // 操纵杆x轴
             jy = (receivefromClient[9] << 8) + receivefromClient[10]; // 操纵杆y轴
